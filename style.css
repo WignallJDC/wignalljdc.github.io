@@ -9,7 +9,7 @@ html, body {
   height: 100%;
   margin: 0;
   background: #104D11;       /* deep blue-grey */
-  color: #e8eef5;
+  color: #104D11;
   overflow: hidden;
 }
 #canvas {
