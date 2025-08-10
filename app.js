@@ -1,6 +1,6 @@
 // a test with javascript for making circles
 
-/const canvas = document.getElementById('canvas');
+const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 let W = 0, H = 0, DPR = 1;
