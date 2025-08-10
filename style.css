@@ -5,14 +5,17 @@
   box-sizing: border-box;
 }
 
-body {
-  font-family: "Times New Roman", cursive, serif;
-  line-height: 1.6;
-  background-color: #ffffff;
-  color: #333;
-  padding: 20px;
-  max-width: 800px;
-  margin: auto;
+html, body {
+  height: 100%;
+  margin: 0;
+  background: #0f1420;       /* deep blue-grey */
+  color: #e8eef5;
+  overflow: hidden;
+}
+#canvas {
+  display: block;            /* removes tiny gap under canvas */
+  width: 100vw;
+  height: 100vh;
 }
 
 h1, h2 {
