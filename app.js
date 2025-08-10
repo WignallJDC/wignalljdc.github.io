@@ -16,7 +16,7 @@ addEventListener('resize', resize);
 resize();
 
 // Create a bunch of circles with random positions and velocities
-const N = 40;
+const N = 30;
 const circles = Array.from({ length: N }, () => {
   const r = 6 + Math.random() * 10;
   const speed = 30 + Math.random() * 60; // px per second
