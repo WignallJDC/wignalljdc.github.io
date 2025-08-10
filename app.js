@@ -54,7 +54,7 @@ function draw() {
     // outer glow
     ctx.beginPath();
     ctx.fillStyle = c.color.replace('0.9', '0.10');
-    ctx.arc(c.x, c.y, c.r * 2.0, 0, Math.PI * 2);
+    ctx.arc(c.x, c.y, c.r * 1.1, 0, Math.PI * 2);
     ctx.fill();
     // core
     ctx.beginPath();
