@@ -47,7 +47,7 @@ function step(dt) {
 
 function draw() {
   // Clear with slight alpha for a soft trail effect; use 1.0 for hard clear
-  ctx.fillStyle = 'rgba(15, 20, 32, 0.35)';
+  ctx.fillStyle = 'rgba(11, 77, 11, 0.35)';
   ctx.fillRect(0, 0, W, H);
 
   for (const c of circles) {
