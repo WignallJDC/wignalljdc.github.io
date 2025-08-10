@@ -1,39 +1,60 @@
 // a test with javascript for making circles
 
-// Fit the canvas to the screen (with HiDPI/retina support)
-const canvas = document.getElementById('canvas');
+/const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
+let W = 0, H = 0, DPR = 1;
 function resize() {
-  const dpr = Math.min(devicePixelRatio || 1, 2); // cap for perf
-  canvas.width  = Math.floor(innerWidth  * dpr);
-  canvas.height = Math.floor(innerHeight * dpr);
+  DPR = Math.min(devicePixelRatio || 1, 2);
+  W = canvas.width  = Math.floor(innerWidth  * DPR);
+  H = canvas.height = Math.floor(innerHeight * DPR);
   canvas.style.width  = innerWidth + 'px';
   canvas.style.height = innerHeight + 'px';
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // draw in CSS pixels
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 }
 addEventListener('resize', resize);
 resize();
 
-// Simple circle data
-const circles = [
-  { x: 140, y: 120, r: 22,  color: 'rgba(130,209,255,0.9)' }, // cyan
-  { x: 320, y: 240, r: 34,  color: 'rgba(193,255,130,0.9)' }, // lime
-  { x: 520, y: 180, r: 16,  color: 'rgba(255,255,255,0.9)' }, // white
-  { x: 220, y: 360, r: 28,  color: 'rgba(130,209,255,0.9)' },
-  { x: 420, y: 420, r: 20,  color: 'rgba(193,255,130,0.9)' }
-];
+// Create a bunch of circles with random positions and velocities
+const N = 40;
+const circles = Array.from({ length: N }, () => {
+  const r = 6 + Math.random() * 10;
+  const speed = 30 + Math.random() * 60; // px per second
+  const angle = Math.random() * Math.PI * 2;
+  return {
+    x: Math.random() * (W / DPR),
+    y: Math.random() * (H / DPR),
+    r,
+    vx: Math.cos(angle) * speed,
+    vy: Math.sin(angle) * speed,
+    color: Math.random() < 0.5 ? 'rgba(130,209,255,0.9)' : 'rgba(193,255,130,0.9)'
+  };
+});
 
-function drawCircles() {
-  // background
-  ctx.fillStyle = '#0f1420';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  // glow + core for each circle
+function step(dt) {
+  const Wcss = W / DPR, Hcss = H / DPR;
+  for (const c of circles) {
+    c.x += c.vx * dt;
+    c.y += c.vy * dt;
+
+    // Bounce on walls
+    if (c.x < c.r) { c.x = c.r; c.vx *= -1; }
+    if (c.x > Wcss - c.r) { c.x = Wcss - c.r; c.vx *= -1; }
+    if (c.y < c.r) { c.y = c.r; c.vy *= -1; }
+    if (c.y > Hcss - c.r) { c.y = Hcss - c.r; c.vy *= -1; }
+  }
+}
+
+function draw() {
+  // Clear with slight alpha for a soft trail effect; use 1.0 for hard clear
+  ctx.fillStyle = 'rgba(15, 20, 32, 0.35)';
+  ctx.fillRect(0, 0, W, H);
+
   for (const c of circles) {
     // outer glow
     ctx.beginPath();
-    ctx.fillStyle = c.color.replace('0.9', '0.12');
-    ctx.arc(c.x, c.y, c.r * 2.2, 0, Math.PI * 2);
+    ctx.fillStyle = c.color.replace('0.9', '0.10');
+    ctx.arc(c.x, c.y, c.r * 2.0, 0, Math.PI * 2);
     ctx.fill();
     // core
     ctx.beginPath();
@@ -43,4 +64,13 @@ function drawCircles() {
   }
 }
 
-drawCircles();
+let last = performance.now();
+function loop(now) {
+  const dt = Math.min(0.05, (now - last) / 1000); // clamp dt for stability
+  last = now;
+  step(dt);
+  draw();
+  requestAnimationFrame(loop);
+}
+loop(performance.now());
+
