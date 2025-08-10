@@ -18,7 +18,7 @@ resize();
 // Create a bunch of circles with random positions and velocities
 const N = 30;
 const circles = Array.from({ length: N }, () => {
-  const r = 6 + Math.random() * 10;
+  const r = 10;
   const speed = 30 + Math.random() * 60; // px per second
   const angle = Math.random() * Math.PI * 2;
   return {
@@ -58,7 +58,7 @@ function draw() {
     ctx.fill();
     // core
     ctx.beginPath();
-    ctx.fillStyle = c.color;
+    //ctx.fillStyle = c.color;
     ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
     ctx.fill();
   }
