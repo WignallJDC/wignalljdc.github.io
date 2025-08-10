@@ -39,7 +39,7 @@ function step(dt) {
 
     // Bounce on walls
     if (c.x < c.r) { c.x = c.r; c.vx *= -1; }
-    if (c.x > Wcss - c.r) { c.x = Wcss - c.r; c.vx *= -1; }
+    if (c.x > Wcss - c.r) { c.x = Wcss - c.r; c.vx *= -1.1; }
     if (c.y < c.r) { c.y = c.r; c.vy *= -1; }
     if (c.y > Hcss - c.r) { c.y = Hcss - c.r; c.vy *= -1; }
   }
